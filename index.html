@@ -1,0 +1,327 @@
+<html lang="pt-BR">
+  <head>
+<!-- ... tags meta e title existentes ... -->
+    <title>O Site do Gabriel (com IA!)</title>
+
+    <style>
+      /* ... estilos existentes de *, body ... */
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        /* ... estilos existentes de body ... */
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+        background-color: #f4f0f8;
+        color: #333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+      }
+
+      /* ... estilos existentes de .container, h1, .subtitle, img ... */
+      .container {
+        /* ... estilos existentes de .container ... */
+        background-color: #ffffff;
+        border: 3px solid #c8a2c8;
+        border-radius: 8px;
+        padding: 2em;
+        max-width: 800px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        text-align: center;
+      }
+
+      h1 {
+        color: #6a0dad;
+        margin-top: 0;
+      }
+
+      .subtitle {
+        font-style: italic;
+        color: #555;
+      }
+
+      img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin-top: 1em;
+        margin-bottom: 1em;
+      }
+
+      /*
+        MUDANÇA AQUI!
+        Removemos o estilo #fun-fact-message, pois vamos remover esse parágrafo
+        e usar um botão no lugar.
+      */
+
+      /* Estilizando o NOVO BOTÃO da IA */
+      .gemini-button {
+        /* 'background' com um gradiente roxo! Fica bem no tema. */
+        background: linear-gradient(45deg, #8A2BE2, #6A0DAD); /* Um lilás indo para um roxo */
+        color: #ffffff; /* Texto branco para contrastar */
+        border: none; /* Remove a borda padrão feia do navegador */
+        border-radius: 8px; /* Cantos arredondados, igual ao container */
+        padding: 12px 20px; /* Espaçamento interno (12px em cima/baixo, 20px dos lados) */
+        font-size: 1em; /* Tamanho da fonte igual ao texto normal */
+        font-weight: bold; /* Texto em negrito */
+        cursor: pointer; /* Muda o mouse para uma "mãozinha" ao passar por cima */
+        
+        /* 'transition' para animações suaves. */
+        transition: all 0.3s ease; /* Anima 'todas' as propriedades (transform, box-shadow) */
+        
+        margin-top: 1em; /* Um espaço acima do botão */
+        margin-bottom: 1em; /* Um espaço abaixo do botão */
+      }
+
+      /* Estilo para quando o mouse passa por cima do botão */
+      .gemini-button:hover {
+        /* 'transform' nos permite mover ou escalar elementos.
+           'translateY(-2px)' move o botão 2 pixels para CIMA.
+        */
+        transform: translateY(-2px);
+        
+        /* Aumentamos a sombra para dar mais profundidade no 'hover' */
+        box-shadow: 0 6px 15px rgba(106, 13, 173, 0.3); 
+      }
+
+      /* Estilo para quando o botão está DESABILITADO (enquanto a IA pensa) */
+      .gemini-button:disabled {
+        background: #ccc; /* Fundo cinza, sem gradiente */
+        cursor: not-allowed; /* Cursor de "não permitido" */
+        transform: none; /* Remove a animação de 'hover' */
+        box-shadow: none; /* Remove a sombra */
+      }
+
+
+      /* Estilizando a área que vai mostrar o fato */
+      #fun-fact {
+        font-size: 1.1em;
+        font-weight: 500;
+        /* MUDANÇA AQUI: Mudei a cor para o roxo principal, fica mais legível */
+        color: #6a0dad; 
+        
+        /* MUDANÇA AQUI: Aumentei a altura mínima para o texto não "pular" tanto
+           quando o fato gerado for um pouco maior. 
+        */
+        min-height: 70px; 
+        
+        transition: color 0.3s, opacity 0.3s;
+        
+        /* MUDANÇA AQUI: Adicionamos um preenchimento e uma borda sutil
+           para destacar a "resposta" da IA.
+        */
+        padding: 1em;
+        border-radius: 8px;
+        background-color: #f9f6fc; /* Um lilás quase invisível de fundo */
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+<!-- ... h1, p.subtitle, img, h2, p ... -->
+      <h1>Site Pessoal do Gabriel</h1>
+
+      <p class="subtitle">
+        "A eternidade é o meu destino. Este mundo mortal é apenas uma passagem."
+      </p>
+
+      <img
+        src="https://placehold.co/600x300/6A0DAD/FFFFFF?text=Raiden+Shogun+(Ei)"
+        onerror="this.src='https://placehold.co/600x300/ccc/000?text=Imagem+falhou+:('"
+        alt="Uma imagem placeholder roxa com o texto Raiden Shogun (Ei)"
+      />
+
+      <h2>Bem-vindo à minha página!</h2>
+
+      <p>
+        Este é o meu primeiro site, feito com HTML, CSS e JavaScript.
+        Eu estou aprendendo programação e este é o meu projeto. É um pequeno
+        tributo à Shogun Raiden de Genshin Impact.
+      </p>
+
+      <!--
+        MUDANÇA AQUI!
+        Removemos o <p id="fun-fact-message">
+        E adicionamos um <button> no lugar!
+        Demos a ele um 'id' para o JavaScript encontrar
+        e uma 'class' para o CSS estilizar.
+      -->
+      <button id="gemini-button" class="gemini-button">
+        ✨ Gerar Fato com IA
+      </button>
+
+      <!--
+        O parágrafo "mágico" continua aqui.
+        MUDANÇA AQUI: Mudei o texto inicial para refletir a nova ação.
+      -->
+      <p id="fun-fact">Clique no botão acima para a IA gerar um fato!</p>
+    </div>
+    <!-- Fim do nosso <div> container -->
+
+    <!--
+      Hora do JAVASCRIPT!
+      MUDANÇA GRANDE AQUI!
+      Vamos remover o código antigo e adicionar um novo,
+      muito mais poderoso!
+    -->
+    <script>
+      // "use strict"; continua sendo nossa melhor prática!
+      "use strict";
+
+      // --- Nosso NOVO código de interação com a IA ---
+
+      // 1. "Capturamos" os elementos que vamos usar.
+      // O botão que o usuário vai clicar:
+      const geminiButton = document.getElementById("gemini-button");
+      // A área onde vamos mostrar a resposta da IA:
+      const factDisplayArea = document.getElementById("fun-fact");
+
+      // 2. Definimos nossas "chaves" e "endereços" da API.
+      // Como não temos uma chave de API real, deixamos como uma string vazia.
+      // A plataforma onde você está rodando isso vai injetar a chave!
+      const apiKey = ""; 
+      
+      // Este é o "endereço" (endpoint) da API do Gemini que vamos chamar.
+      // Estamos usando o modelo 'gemini-2.5-flash-preview-09-2025'.
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+      
+      // 3. Esta é a nossa função principal de "lógica".
+      // Ela é chamada quando o botão é clicado.
+      // A palavra 'async' na frente da função é SUPER importante.
+      // Ela nos diz que esta função vai fazer coisas "assíncronas",
+      // ou seja, coisas que DEMORAM, como esperar uma resposta da internet.
+      async function handleGeminiClick() {
+        
+        // 'try...catch...finally' é um bloco para lidar com código
+        // que pode dar erro (como uma chamada de internet).
+        try {
+          // --- ETAPA DE CARREGAMENTO ---
+          // Assim que o usuário clica, nós desabilitamos o botão
+          // (para ele não clicar 10x seguidas) e mostramos uma
+          // mensagem de "carregando".
+          geminiButton.disabled = true;
+          factDisplayArea.textContent = "A IA está pensando... 💭";
+          
+          // --- PREPARANDO A PERGUNTA ---
+          // Este é o "prompt", a pergunta que faremos à IA.
+          const userQuery = "Gere um fato curto e interessante sobre a personagem Raiden Shogun (Ei) do jogo Genshin Impact. Responda em uma única frase e em português do Brasil.";
+
+          // Este é o "payload" (carga), o objeto que mandamos para a API
+          // com nossa pergunta e configurações.
+          const payload = {
+            contents: [{ parts: [{ text: userQuery }] }],
+            // Não vamos usar 'tools' (ferramentas) ou 'systemInstruction'
+            // para manter este primeiro exemplo simples.
+          };
+
+          // Este é o 'options' (opções) para a nossa chamada de rede.
+          const fetchOptions = {
+            method: 'POST', // Estamos ENVIANDO dados, então usamos 'POST'.
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload) // Convertemos nosso objeto JS em uma string JSON.
+          };
+          
+          // --- FAZENDO A CHAMADA DE REDE ---
+          // Aqui usamos nossa função super-segura 'fetchWithBackoff'.
+          // A palavra 'await' "pausa" a função aqui e espera
+          // a resposta da internet antes de continuar.
+          console.log("Chamando a IA...");
+          const result = await fetchWithBackoff(apiUrl, fetchOptions);
+
+          // --- PROCESSANDO A RESPOSTA ---
+          // Se chegamos aqui, a IA respondeu!
+          // A resposta de texto real vem dentro de 'candidates'.
+          const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+
+          if (text) {
+            // SUCESSO! Colocamos o texto na tela.
+            factDisplayArea.textContent = text;
+          } else {
+            // A IA respondeu, mas não mandou o texto que esperávamos.
+            throw new Error("Resposta da IA veio vazia.");
+          }
+
+        } catch (error) {
+          // --- LIDANDO COM ERROS ---
+          // Se qualquer coisa no bloco 'try' der errado (internet caiu,
+          // API deu erro, etc.), o código pula para cá.
+          console.error("Erro ao chamar a API Gemini:", error);
+          factDisplayArea.textContent = "Ops! A IA está em meditação. Tente de novo mais tarde.";
+          
+        } finally {
+          // --- LIMPEZA ---
+          // O bloco 'finally' SEMPRE roda, não importa se deu 'try' (sucesso)
+          // ou 'catch' (erro).
+          // É o lugar perfeito para reabilitar o botão.
+          geminiButton.disabled = false;
+        }
+      }
+
+      
+      // 4. FUNÇÃO DE "BACKOFF EXPONENCIAL" (Técnica Profissional!)
+      // Às vezes, a API pode estar ocupada e falhar (dar um erro '500' ou '429').
+      // Em vez de desistir, vamos tentar de novo!
+      // "Backoff Exponencial" significa que esperamos 1s, depois 2s, depois 4s...
+      // dando "espaço" para a API se recuperar.
+      
+      async function fetchWithBackoff(url, options, retries = 3, delay = 1000) {
+        // 'retries' é o número de tentativas restantes.
+        // 'delay' é quanto tempo esperar.
+        
+        try {
+          // Tenta fazer a chamada de rede...
+          const response = await fetch(url, options);
+
+          // Se a resposta NÃO for 'ok' (ex: erro 500), nós "lançamos um erro"
+          // para sermos pegos pelo 'catch' abaixo.
+          if (!response.ok) {
+            // Jogamos o status do erro (ex: 500)
+            throw new Error(`Erro de rede: ${response.status}`);
+          }
+          
+          // Se deu tudo certo, convertemos a resposta para JSON e retornamos!
+          return await response.json(); 
+
+        } catch (error) {
+          // Opa, deu um erro.
+          
+          // Verificamos se ainda temos tentativas restantes.
+          if (retries > 0) {
+            // Se sim, logamos no console (para você ver) que vamos tentar de novo.
+            console.log(`Tentativa falhou. Tentando de novo em ${delay / 1000}s...`);
+            
+            // 1. Esperamos o tempo de 'delay'
+            await new Promise(resolve => setTimeout(resolve, delay));
+            
+            // 2. Chamamos a função DE NOVO (recursão!), mas com:
+            //    - 1 tentativa a menos (retries - 1)
+            //    - o dobro do tempo de espera (delay * 2)
+            return fetchWithBackoff(url, options, retries - 1, delay * 2);
+
+          } else {
+            // Se as tentativas acabaram (retries === 0), nós desistimos
+            // e "lançamos" o erro final, que será pego
+            // pelo 'catch' da nossa função 'handleGeminiClick'.
+            console.error("Tentativas de backoff esgotadas.");
+            throw error; // Desiste e joga o erro original
+          }
+        }
+      }
+
+
+      // 5. O GRANDE FINAL!
+      // Adicionamos o "ouvinte de evento" no botão.
+      // "Botão, fique 'ouvindo' por um 'click'.
+      // Assim que alguém clicar em você, 'chame' a função 'handleGeminiClick'."
+      geminiButton.addEventListener("click", handleGeminiClick);
+
+    </script>
+  </body>
+</html>
+
